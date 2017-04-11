@@ -1,0 +1,58 @@
+body {
+  // display: flex;
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.hide {
+  display: none!important;
+}
+
+.show {
+  display: inherit;
+  flex-direction: inherit;
+}
+
+main {}
+
+.user-amount {
+  background-color: green;
+}
+
+ul {
+  list-style-type: none;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  textarea {
+    width: 20em;
+  }
+  input[type="submit"], input[type="text"] {
+    width: 20rem;
+  }
+}
+
+strong {
+  text-transform: capitalize;
+}
+
+.message-container {
+  display: flex;
+  flex-direction: column;
+  margin: 1em;
+  .chat-messages {
+    min-height: 4em;
+    width: 20em;
+    background-color: #d3d3d3;
+    .user-message {
+      padding: 1em 1em;
+      background-color: green;
+    }
+  }
+}
