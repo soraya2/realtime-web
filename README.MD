@@ -13,9 +13,9 @@ https://shrouded-retreat-78196.herokuapp.com/
 ## Getting started
 
  Start the application with the command:
-
-  npm start
+ 
+     npm start
 
  to run tests (XO style)
 
-  npm test
+     npm test
