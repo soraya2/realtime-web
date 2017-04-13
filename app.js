@@ -2,7 +2,6 @@ var path = require('path');
 var http = require('http');
 
 var express = require('express');
-var bodyParser = require('body-parser');
 var lessMiddleware = require('less-middleware');
 var hbs = require('express-handlebars');
 
@@ -20,9 +19,6 @@ var userId = [];
 app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'main', layoutDir: path.join(__dirname, 'views', 'layout')}));
 app.set('view engine', 'hbs');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-// App.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
