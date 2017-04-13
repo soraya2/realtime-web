@@ -16,7 +16,7 @@
     "express-handlebars": "^3.0.0",
     "hbs": "~4.0.1",
     "less-middleware": "~2.2.0",
-    "socket.io": "^1.7.3",
+    "socket.io": "^1.7.3"
   },
   "xo": {
     "fix": true,
