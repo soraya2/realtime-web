@@ -16,6 +16,6 @@ https://shrouded-retreat-78196.herokuapp.com/
  
      npm start
 
- to run tests (XO style)
+ To run tests (XO style)
 
      npm test
