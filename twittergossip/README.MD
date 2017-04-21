@@ -1,21 +1,28 @@
-# Chat app with socket.io
+# Twitter feed
 
-This is an express chat app created with socket.io.
-The app sends and receives messages and distinguishes messages that you send from the messages that you receive based on a socket id.
-### live link
-https://shrouded-retreat-78196.herokuapp.com/
+Application with socket io and the twitter api. To be continued.
 
-## Future features
-
-- Distinguish messages based on names
-- Store names inside database
+no live link
 
 ## Getting started
 
- Start the application with the command:
- 
-     npm start
+Clone the repo and install the dependencies with
+`$ npm install`
 
- To run tests (XO style)
+To start the app run
+`$ npm run start`
 
-     npm test
+Create your own .env file with these variables:
+```
+CONSUMER_KEY=<consumer_key>
+CONSUMER_SECRET=<consumer_secret>
+ACCESS_TOKEN_KEY=<access_token_key>
+ACCESS_TOKEN_SECRET=<access_token_secret>
+```
+
+### Wishlist
+-  [ ] Searching through your own timeline content
+-  [ ] Count how much subscription messages you have that match your search criteria
+-  [ ] Show top ten trending topics per country
+
+

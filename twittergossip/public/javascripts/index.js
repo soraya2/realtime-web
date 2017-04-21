@@ -6,15 +6,8 @@
   var userContainer = document.getElementsByClassName('user-container')[0];
   var userList = document.getElementById('user-list');
   // Var coloredButtons = document.querySelectorAll('button');
-  var userName = document.getElementById('user-name');
   // messageContainer.classList.add('hide');
 
-  messageForm.addEventListener('submit', function (e) {
-    var message = document.getElementById('message');
-    e.preventDefault();
-    socket.emit('send message', message.value);
-    message.value = '';
-  });
 
   // userForm.addEventListener('submit', function (e) {
   //   e.preventDefault();
@@ -47,7 +40,17 @@
 
     return id;
   }
+socket.on('time', function (data) {
+    var chatMessage = document.createElement('div');
+    chatMessage.classList.add('user-message');
+  console.log(data.info.text);
+ console.log( data.info.user.profile_image_url_https);
 
+    chatMessage.innerHTML = `<div class=${data.info.id} tweet><img src= ${data.info.user.profile_image_url_https}><p>${data.info.text}</p></div>`;
+
+    var chat = document.getElementById('chat');
+    chat.appendChild(chatMessage);
+});
 
   socket.on('user connectionId', function (data) {
 
@@ -77,9 +80,6 @@
             return result.index >= 0;
         }
       }
-
-
-
     }
 
 
@@ -89,43 +89,5 @@
   });
 
 
-
-  socket.on('new message', function (data) {
-    var chatMessage = document.createElement('div');
-    chatMessage.classList.add('user-message');
-
-    chatMessage.innerHTML = `<p class="${data.id} message"><strong>${data.user}:</strong> ${data.msg}</p>`;
-
-    var chat = document.getElementById('chat');
-    chat.appendChild(chatMessage);
-
-    var messageColor = [].slice.call(document.querySelectorAll('.user-message p'));
-
-    function colors(messages) {
-      console.log(messages.classList[0]);
-
-      if (demoId.id === messages.classList[0]) {
-        messages.parentNode.style.cssText = 'justify-content: flex-end; ';
-
-        messages.style.cssText = 'background-color:#00B2A3; align-self: flex-end;  margin: 0.3rem;';
-        return true;
-      }
-      messages.style.cssText = 'background-color:#FF6419; margin-top: 0.5rem;';
-
-      return false;
-    }
-    messageColor.filter(colors);
-  });
-
-  socket.on('get users', function (data) {
-    var i;
-    var html = '';
-
-    for (i = 0; i < data.user.length; i++) {
-      html += `<li> ${data.user[i]} </li>`;
-    }
-
-    userList.innerHTML = html;
-  });
 })();
 
