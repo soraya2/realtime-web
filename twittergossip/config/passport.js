@@ -29,7 +29,7 @@ module.exports = function (passport) {
 
     consumerKey: process.env.TWITTER_CONSUMER_KEY,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-    callbackURL: 'https://f965a2bb.ngrok.io/auth/twitter/callback'
+    callbackURL: process.env.TWITTERCALLBACK
 
   },
   function (token, tokenSecret, profile, done) {
