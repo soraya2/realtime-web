@@ -24,10 +24,9 @@ module.exports = function (app, passport, io) {
   app.get('/auth/twitter/callback', passport.authenticate('twitter', {successRedirect: '/profile', failureRedirect: '/', failureFlash: true}));
 
   app.get('/profile', isLoggedIn, function (req, res) {
-        // Console.log(User.base.models.User);
+
   // find user in database
     User.findById(req.user.id, function (err, doc) {
-  // Doc is a Document
 
       var usersFriends = [];
       var twitter = new twit({
@@ -54,7 +53,7 @@ module.exports = function (app, passport, io) {
                 // Things[i]
             var rand = tweets.users[arr[i]];
           }
-          console.log(rand);
+          // console.log(rand);
           usersFriends.push(rand);
         }
       });
@@ -67,10 +66,10 @@ module.exports = function (app, passport, io) {
       // Twitter.stream('user',function (stream) {
       twitter.stream('statuses/filter', {track: 'news', stall_warnings: true}, function (stream) {
         stream.on('data', function (data) {
+        console.log(stream);
           function myFunction() {
             setInterval(function () {
-        // Console.log(data);
-              io.sockets.in('timer').emit('time', {info: data});
+              io.sockets.in('timer').emit('time', {info: data });
             }, 5000);
           }myFunction();
         });
@@ -78,7 +77,8 @@ module.exports = function (app, passport, io) {
         stream.destroy();
       });
     });
-    res.render('profile', {title: 'profile', user: req.user});
+    console.log(req.user.twitter.username);
+    res.render('profile', {title: 'profile', username: req.user.twitter.username,  displayname: req.user.twitter.displayName});
   });
 
   app.get('/logout', function (req, res) {
