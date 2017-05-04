@@ -66,7 +66,7 @@ module.exports = function (app, passport, io) {
       // Twitter.stream('user',function (stream) {
       twitter.stream('statuses/filter', {track: 'news', stall_warnings: true}, function (stream) {
         stream.on('data', function (data) {
-        console.log(stream);
+
           function myFunction() {
             setInterval(function () {
               io.sockets.in('timer').emit('time', {info: data });
@@ -74,7 +74,7 @@ module.exports = function (app, passport, io) {
           }myFunction();
         });
 
-        stream.destroy();
+        // stream.destroy();
       });
     });
     console.log(req.user.twitter.username);
