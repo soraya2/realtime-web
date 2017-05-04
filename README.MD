@@ -1,7 +1,11 @@
 # Twitter feed
 
 Application with socket io and the twitter api. To be continued.
-
+## Table of contents
+- [Optimizing css](#css)
+- [Optimizing images](#img)
+- [Lazy loading](#lazyloading)
+- [JS remove child-node](#remove)
 no live link
 
 ## Getting started

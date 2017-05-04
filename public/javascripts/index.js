@@ -5,9 +5,10 @@
   var messageContainer = document.getElementsByClassName('message-container')[0];
   var userContainer = document.getElementsByClassName('user-container')[0];
   var userList = document.getElementById('user-list');
+  var selectBox = document.getElementById('user-friends');
+
   // Var coloredButtons = document.querySelectorAll('button');
   // messageContainer.classList.add('hide');
-
 
   // userForm.addEventListener('submit', function (e) {
   //   e.preventDefault();
@@ -35,25 +36,45 @@
   // });
 
   function saveConnection(conncetionId) {
-
     var id = conncetionId;
 
     return id;
   }
-socket.on('time', function (data) {
+
+  var tweets = [];
+
+  socket.on('time', function (data) {
+    console.log('data', 'data');
+    var option = document.createElement('option');
+    option.text = `${data.friends}`;
+    selectBox.add(option);
+
     var chatMessage = document.createElement('div');
+
+    tweets.push(data);
+    console.log(tweets);
     chatMessage.classList.add('user-message');
-  console.log(data.info.text);
- console.log( data.info.user.profile_image_url_https);
 
-    chatMessage.innerHTML = `<div class=${data.info.id} tweet><img src= ${data.info.user.profile_image_url_https}><p>${data.info.text}</p></div>`;
+ // Console.log( data.info.user.profile_image_url_https);
+    var cutstring = data.info.text.split(': ');
+    // Console.log(cutstring[1]);
 
+    function stringCheck() {
+      if (cutstring[1] !== undefined) {
+        return cutstring[1];
+      }
+      return cutstring[0];
+    }
+    tweets.push(data);
+
+    console.log(tweets);
     var chat = document.getElementById('chat');
+    chatMessage.innerHTML = `<div class=${data.info.id} tweet><p>${stringCheck()}</p></div>`;
+
     chat.appendChild(chatMessage);
-});
+  });
 
   socket.on('user connectionId', function (data) {
-
     var test = [];
     var demoId = {};
     var connectionId = this.id;
@@ -62,32 +83,25 @@ socket.on('time', function (data) {
     demoId.id = connectionId;
     test.push(dd);
 
-    // data.data.map( function(news){
-
+    // Data.data.map( function(news){
 
     //     console.log(today);
 
     // });
     function currentNews(news, index) {
-        var lowerCaseName = news.description.toLowerCase();
-      if(news.description !==''){
+      var lowerCaseName = news.description.toLowerCase();
+      if (news.description !== '') {
         console.log(lowerCaseName);
 
-        var result = lowerCaseName.match('shot','g', 'i');
+        var result = lowerCaseName.match('shot', 'g', 'i');
 
-        if(result !== null  ){
-
-            return result.index >= 0;
+        if (result !== null) {
+          return result.index >= 0;
         }
       }
     }
 
-
-// var filterdData = data.news.filter(currentNews);
-
-
+// Var filterdData = data.news.filter(currentNews);
   });
-
-
 })();
 
