@@ -1,107 +1,125 @@
-(function () {
-  var socket = io.connect();
-  var messageForm = document.getElementById('message-form');
-  var userForm = document.getElementById('user-form');
-  var messageContainer = document.getElementsByClassName('message-container')[0];
-  var userContainer = document.getElementsByClassName('user-container')[0];
-  var userList = document.getElementById('user-list');
-  var selectBox = document.getElementById('user-friends');
+(function() {
+    var socket = io.connect();
+    var messageForm = document.getElementById('message-form');
+    var userForm = document.getElementById('user-form');
+    var messageContainer = document.getElementsByClassName('message-container')[0];
+    var userContainer = document.getElementsByClassName('user-container')[0];
 
-  // Var coloredButtons = document.querySelectorAll('button');
-  // messageContainer.classList.add('hide');
+    var form = document.getElementById('form');
 
-  // userForm.addEventListener('submit', function (e) {
-  //   e.preventDefault();
-  //   var userNameValue = userName.value;
-  //   console.log(userNameValue);
-  //   socket.emit('new user', userNameValue, function (data) {
-  //   // Looping over buttons to get value and add them to message that has the same user id that picked it
+    var userInput = document.getElementById('tweeter-list');
 
-  //   // ColoredButtons.forEach(function (button) {
-  //   //     button.addEventListener('click',function (e){
-  //   //       console.log(button.value);
-  //   //       // var userName = userName.value;
-  //   //       var buttonValue = button.value;
-  //   //       // console.log({userName:buttonValue});
-  //   //     });
-  //   // });
+    var userValue;
 
-  //     if (data) {
-  //       userContainer.classList.add('hide');
-  //       messageContainer.classList.remove('hide');
-  //     }
-  //   });
+    userInput.addEventListener('change', function(event) {
+        console.log(userInput.value);
+        userValue = userInput.value;
 
-  //   userName.value = '';
-  // });
-
-  function saveConnection(conncetionId) {
-    var id = conncetionId;
-
-    return id;
-  }
-
-  var tweets = [];
-
-  socket.on('time', function (data) {
-    console.log('data', 'data');
-    var option = document.createElement('option');
-    option.text = `${data.friends}`;
-    selectBox.add(option);
-
-    var chatMessage = document.createElement('div');
-
-    tweets.push(data);
-    console.log(tweets);
-    chatMessage.classList.add('user-message');
-
- // Console.log( data.info.user.profile_image_url_https);
-    var cutstring = data.info.text.split(': ');
-    // Console.log(cutstring[1]);
-
-    function stringCheck() {
-      if (cutstring[1] !== undefined) {
-        return cutstring[1];
-      }
-      return cutstring[0];
-    }
-    tweets.push(data);
-
-    console.log(tweets);
-    var chat = document.getElementById('chat');
-    chatMessage.innerHTML = `<div class=${data.info.id} tweet><p>${stringCheck()}</p></div>`;
-
-    chat.appendChild(chatMessage);
-  });
-
-  socket.on('user connectionId', function (data) {
-    var test = [];
-    var demoId = {};
-    var connectionId = this.id;
-    var dd = saveConnection(connectionId);
-
-    demoId.id = connectionId;
-    test.push(dd);
-
-    // Data.data.map( function(news){
-
-    //     console.log(today);
-
-    // });
-    function currentNews(news, index) {
-      var lowerCaseName = news.description.toLowerCase();
-      if (news.description !== '') {
-        console.log(lowerCaseName);
-
-        var result = lowerCaseName.match('shot', 'g', 'i');
-
-        if (result !== null) {
-          return result.index >= 0;
+        event.preventDefault();
+        if (userInput.value !== '') {
+            var input = userInput.value;
         }
-      }
+    });
+
+    function saveConnection(conncetionId) {
+        var id = conncetionId;
+
+        return id;
     }
 
-// Var filterdData = data.news.filter(currentNews);
-  });
-})();
+    socket.on('time', function(data) {
 
+        try {
+
+            var dataCheck = data.info.text;
+
+            // var cutstring = data.info.tweet.split(': ');
+            // console.log(data.info);
+            sendData(data);
+
+            var chatMessage = document.createElement('div');
+
+            chatMessage.classList.add('user-message');
+
+            // Console.log(cutstring[1]);
+
+            function stringCheck() {
+
+                if (cutstring[1] !== undefined) {
+
+                    return cutstring[1];
+                }
+
+                return cutstring[0];
+            }
+            // tweets.push(data);
+
+
+            var chat = document.getElementById('chat');
+
+            // chatMessage.innerHTML = `<div class=${data.info.id} tweet><p>${stringCheck()}</p></div>`;
+
+            // chat.appendChild(chatMessage);
+
+        } catch (err) {
+            console.log(err);
+        }
+    });
+
+
+    function sendData(data) {
+
+        function sendTweets() {
+
+            var randomnumber = Math.floor(Math.random() * data.info.length);
+            var i;
+            var tweetbox = document.getElementById('tweet');
+            var index = 0;
+
+            tweetbox.innerHTML = data.info[index].tweet;
+
+            return index++;
+        }
+
+        setInterval(sendTweets, 6000);
+
+    }
+
+    socket.on('user connectionId', function(data) {
+        var test = [];
+        var demoId = {};
+        var connectionId = this.id;
+        var dd = saveConnection(connectionId);
+
+        demoId.id = connectionId;
+        test.push(dd);
+
+        function currentNews(news, index) {
+            var lowerCaseName = news.description.toLowerCase();
+            if (news.description !== '') {
+                console.log(lowerCaseName);
+
+                var result = lowerCaseName.match('shot', 'g', 'i');
+
+                if (result !== null) {
+                    return result.index >= 0;
+                }
+            }
+        }
+    });
+    socket.on('friend', function(data) {
+        var tweeterList = document.getElementById('tweeter-list');
+
+        var randomnumber = Math.floor(Math.random() * data.names.length);
+
+        data.names.splice(randomnumber, 0, { name: "Lene" });
+        data.names.join();
+
+        data.names.map(function(name) {
+
+            tweeterList.options[tweeterList.options.length] = new Option(name.name, name.name);
+        });
+    });
+
+
+})();

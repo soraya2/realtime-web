@@ -2,6 +2,25 @@
   <p>{{username}}</p>
   <p>{{displayname}}</p>
 </div>
+{{!-- <div class="loader"></div> --}}
 <a href="/logout">logout</a>
-<div id='chat'></div>
-<select id="user-friends"></select>
+<div class="container" id='chat'>
+
+  <h1>Who's the tweeter</h1>
+
+  <p class="score">Score: 10</p>
+  <p class="highscore">HighScore: 10 </p>
+  <div >
+    <div class='background'>
+       <p class='tweet' id='tweet'></p>
+{{!--        <form id="form" action="" method="post">
+        <label>Who tweeted this?</label>
+        <input id="user-input" type="text">
+        <input type="submit" name="submit" value="Send" id="submit">
+       </form> --}}
+    </div>
+</div>
+<select name="tweeter-list" id="tweeter-list">
+   <option value="test">test</option>
+   <option value="test2">test2</option>
+</select>
