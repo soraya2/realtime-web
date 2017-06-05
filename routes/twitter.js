@@ -61,12 +61,6 @@ module.exports = {
 
 };
 
-
-
-
-
-
-io.emit('time', { Friends: 'usersFriends' });
 User.findById(req.user.id, function(err, doc) {
             var tweets = [];
             var usersFriends = [];

@@ -36,6 +36,7 @@
             // var cutstring = data.info.tweet.split(': ');
             // console.log(data.info);
             sendData(data);
+            optionData(data);
 
             var chatMessage = document.createElement('div');
 
@@ -71,19 +72,47 @@
 
         function sendTweets() {
 
-            var randomnumber = Math.floor(Math.random() * data.info.length);
+            // var randomnumber = Math.floor(Math.random() * data.info.length);
             var i;
             var tweetbox = document.getElementById('tweet');
-            var index = 0;
 
-            tweetbox.innerHTML = data.info[index].tweet;
+            tweetbox.innerHTML = data.info.tweet;
+            // console.log(data);
 
-            return index++;
+
         }
 
         setInterval(sendTweets, 6000);
 
     }
+
+    function optionData(data) {
+
+
+        // console.log(data.friends);
+        var tweeterList = document.getElementById('tweeter-list');
+        var opt = document.createElement("option");
+        opt.value = null;
+        opt.innerHTML = null;
+
+        data.friends.map(function(name) {
+            tweeterList.options[tweeterList.options.length] = null;
+            // opt.value = '';
+            // opt.innerHTML = '';
+
+            // opt.value = name.name;
+            // opt.text = name.name;
+
+            opt.value = name.name;
+            opt.innerHTML = name.name;
+            tweeterList.appendChild(opt);
+
+            // tweeterList.options[tweeterList.options.length] = Option(name.name, name.name);
+        });
+
+    }
+
+
 
     socket.on('user connectionId', function(data) {
         var test = [];
@@ -107,19 +136,19 @@
             }
         }
     });
-    socket.on('friend', function(data) {
-        var tweeterList = document.getElementById('tweeter-list');
+    // socket.on('friend', function(data) {
+    //     var tweeterList = document.getElementById('tweeter-list');
 
-        var randomnumber = Math.floor(Math.random() * data.names.length);
+    //     var randomnumber = Math.floor(Math.random() * data.names.length);
 
-        data.names.splice(randomnumber, 0, { name: "Lene" });
-        data.names.join();
+    //     data.names.splice(randomnumber, 0, { name: "Lene" });
+    //     data.names.join();
 
-        data.names.map(function(name) {
+    //     data.names.map(function(name) {
 
-            tweeterList.options[tweeterList.options.length] = new Option(name.name, name.name);
-        });
-    });
+    //         tweeterList.options[tweeterList.options.length] = new Option(name.name, name.name);
+    //     });
+    // });
 
 
 })();
