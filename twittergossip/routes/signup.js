@@ -2,9 +2,8 @@ var express = require('express');
 
 var router = express.Router();
 
-/* GET home page. */
 router.get('/', function(req, res) {
-    res.render('index', { title: 'Chat' });
+    // Render the page and pass in any flash data if it exists
+    res.render('signup', { title: 'signup' });
 });
-
 module.exports = router;

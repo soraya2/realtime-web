@@ -21,56 +21,49 @@ module.exports = function (passport) {
 
   // Code for login (use('local-login', new LocalStategy))
   // code for signup (use('local-signup', new LocalStategy))
- passport.use('local-signup', new LocalStrategy({
-        // by default, local strategy uses username and password, we will override with email
-        usernameField : 'email',
-        passwordField : 'password',
-        passReqToCallback : true // allows us to pass back the entire request to the callback
-    },
-    function(req, email, password, done) {
-
-        // asynchronous
+  passport.use('local-signup', new LocalStrategy({
+        // By default, local strategy uses username and password, we will override with email
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true // Allows us to pass back the entire request to the callback
+  },
+    function (req, email, password, done) {
+        // Asynchronous
         // User.findOne wont fire unless data is sent back
-        process.nextTick(function() {
-
-        // find a user whose email is the same as the forms email
+      process.nextTick(function () {
+        // Find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ 'local.email' :  email }, function(err, user) {
-            // if there are any errors, return the error
-            if (err)
-                return done(err);
+        User.findOne({'local.email': email}, function (err, user) {
+            // If there are any errors, return the error
+          if (err) {
+            return done(err);
+          }
 
-            // check to see if theres already a user with that email
-            if (user) {
-                return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-            } else {
+            // Check to see if theres already a user with that email
+          if (user) {
+            return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+          }
 
-                // if there is no user with that email
+                // If there is no user with that email
                 // create the user
-                var newUser            = new User();
+          var newUser = new User();
 
-                // set the user's local credentials
-                newUser.local.email    = email;
-                newUser.local.password = newUser.generateHash(password);
+                // Set the user's local credentials
+          newUser.local.email = email;
+          newUser.local.password = newUser.generateHash(password);
 
-                // save the user
-                newUser.save(function(err) {
-                    if (err)
-                        throw err;
-                    return done(null, newUser);
-                });
+                // Save the user
+          newUser.save(function (err) {
+            if (err) {
+              throw err;
             }
-
+            return done(null, newUser);
+          });
         });
-
-        });
-
+      });
     }));
 
-
-
-
- // twitter oauth
+ // Twitter oauth
   passport.use(new TwitterStrategy({
 
     consumerKey: process.env.TWITTER_CONSUMER_KEY,
