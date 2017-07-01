@@ -28,16 +28,14 @@
     }
 
     socket.on('time', function(data) {
-
         try {
-
             var dataCheck = data.info.text;
 
-            // var cutstring = data.info.tweet.split(': ');
+            // Var cutstring = data.info.tweet.split(': ');
             // console.log(data.info);
             sendData(data);
             optionData(data);
-
+            console.log(data.friends.length);
             var chatMessage = document.createElement('div');
 
             chatMessage.classList.add('user-message');
@@ -45,59 +43,50 @@
             // Console.log(cutstring[1]);
 
             function stringCheck() {
-
                 if (cutstring[1] !== undefined) {
-
                     return cutstring[1];
                 }
 
                 return cutstring[0];
             }
-            // tweets.push(data);
-
+            // Tweets.push(data);
 
             var chat = document.getElementById('chat');
 
-            // chatMessage.innerHTML = `<div class=${data.info.id} tweet><p>${stringCheck()}</p></div>`;
+            // ChatMessage.innerHTML = `<div class=${data.info.id} tweet><p>${stringCheck()}</p></div>`;
 
             // chat.appendChild(chatMessage);
-
         } catch (err) {
             console.log(err);
         }
     });
 
-
     function sendData(data) {
+        var i;
+        var tweetbox = document.getElementById('tweet');
+        tweetbox.innerHTML = '';
 
-        function sendTweets() {
+        // function sendTweets() {
+        // Var randomnumber = Math.floor(Math.random() * data.info.length);
 
-            // var randomnumber = Math.floor(Math.random() * data.info.length);
-            var i;
-            var tweetbox = document.getElementById('tweet');
+        tweetbox.innerHTML = data.info.tweet;
+        // Console.log(data);
+        // }
 
-            tweetbox.innerHTML = data.info.tweet;
-            // console.log(data);
-
-
-        }
-
-        setInterval(sendTweets, 6000);
-
+        // setInterval(sendTweets, 6000);
     }
 
     function optionData(data) {
-
-
-        // console.log(data.friends);
+        // Console.log(data.friends);
+        // console.log(data.friends.length);
         var tweeterList = document.getElementById('tweeter-list');
-        var opt = document.createElement("option");
+        var opt = document.createElement('option');
         opt.value = null;
         opt.innerHTML = null;
 
         data.friends.map(function(name) {
             tweeterList.options[tweeterList.options.length] = null;
-            // opt.value = '';
+            // Opt.value = '';
             // opt.innerHTML = '';
 
             // opt.value = name.name;
@@ -107,12 +96,9 @@
             opt.innerHTML = name.name;
             tweeterList.appendChild(opt);
 
-            // tweeterList.options[tweeterList.options.length] = Option(name.name, name.name);
+            // TweeterList.options[tweeterList.options.length] = Option(name.name, name.name);
         });
-
     }
-
-
 
     socket.on('user connectionId', function(data) {
         var test = [];
@@ -136,7 +122,7 @@
             }
         }
     });
-    // socket.on('friend', function(data) {
+    // Socket.on('friend', function(data) {
     //     var tweeterList = document.getElementById('tweeter-list');
 
     //     var randomnumber = Math.floor(Math.random() * data.names.length);
@@ -149,6 +135,4 @@
     //         tweeterList.options[tweeterList.options.length] = new Option(name.name, name.name);
     //     });
     // });
-
-
 })();

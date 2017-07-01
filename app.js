@@ -17,9 +17,10 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server); // Use socket io in seperate files
 require('./config/passport')(passport);
 mongoose.Promise = global.Promise;
-// Var twitter = require('./routes/twitter');
-// var oauth = require('./routes/oauth');
 
+
+
+// Routes
 app.use(morgan('dev')); // Log every request to the console
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -37,10 +38,17 @@ app.use(passport.session()); // Persistent login sessions
 app.use(flash()); // Use connect-flash for flash messages stored in session
 
 mongoose.connect(process.env.USERDB);
-require('./routes/routes.js')(app, passport, io);
+//
+var index = require('./routes/index.js');
+var login = require('./routes/login.js');
+var logout = require('./routes/logout.js');
+var signup = require('./routes/signup.js');
+var error = require('./routes/error.js');
+var profile = require('./routes/profile.js')(passport, io);
+var oauth = require('./routes/twitteroath.js')(passport);
 
-// Console.log(mongoose.connection.readyState); //test database connection
-// twitter.socketIo(io);
+// console.log(mongoose.connection.readyState); //test database connection
+
 var users = [];
 var connections = [];
 var userId = [];
@@ -52,25 +60,22 @@ app.use(less(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-// app.use('/login', twitter.router);
-// app.use('/oauth', oauth);
+app.use('/', index);
+app.use('/login', login);
+app.use('/logout', logout);
+app.use('/profile', profile);
+app.use('/signup', signup);
+app.use('/auth/twitter', oauth);
+// app.use('/*', notfound);
 
-// store pouchdb with express session??
-// store: new (require('express-sessions'))({
-//     storage: 'mongodb',
-//     instance: mongoose, // optional
-//     host: 'localhost', // optional
-//     port: 27017, // optional
-//     db: 'test', // optional
-//     collection: 'sessions', // optional
-//     expire: 86400 // optional
-// })
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+    // var err = new Error('Not Found');
+    // err.status = 404;
+    res.render('404', { title: '404' });
 });
 
 // Error handler
@@ -86,8 +91,6 @@ app.use(function(err, req, res) {
 
 // Socket io connection
 app.set('port', process.env.PORT || 3000);
-
-
 
 server.listen(app.get('port'), function() {
     console.log('app started on localhost:3000');
