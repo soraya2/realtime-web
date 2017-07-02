@@ -1,26 +1,27 @@
-<div id='profile'>
-  <p>{{username}}</p>
-  <p>{{displayname}}</p>
-</div>
-{{!-- <div class="loader"></div> --}}
-<a href="/logout">logout</a>
-<div class="container" id='chat'>
+  <main class="main-background">
 
-  <h1>Who's the tweeter</h1>
+  <div id='profile'>
+    {{!-- <p>{{displayname}}</p> --}}
+    <p>Welkom: {{username}}</p>
+  </div>
+  {{!-- <div class="loader"></div> --}}
+  <a href="/logout">logout</a>
+  <section class="container">
 
-  <p class="score">Score: 10</p>
-  <p class="highscore">HighScore: 10 </p>
-  <div >
-    <div class='background'>
-       <p class='tweet' id='tweet'></p>
-{{!--        <form id="form" action="" method="post">
-        <label>Who tweeted this?</label>
-        <input id="user-input" type="text">
-        <input type="submit" name="submit" value="Send" id="submit">
-       </form> --}}
-    </div>
+    <h1 class="title">Who's the tweeter</h1>
+<div class="group">
+    <p class="score">High: <span>0</span></p>
+    <p class="highscore"> <span>0</span> </p>
 </div>
-<select name="tweeter-list" id="tweeter-list">
-   <option value="test">test</option>
-   <option value="test2">test2</option>
-</select>
+<ul>
+  <li><img class="bird" src="img/_bird.svg" alt="bird"></li>
+
+</ul>
+      <div class='background'>
+         <p class='tweest' id='tweet'></p>
+      </div>
+  </section>
+  <select name="tweeter-list" id="tweeter-list">
+
+  </select>
+  </main>

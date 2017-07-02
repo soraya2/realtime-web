@@ -1,10 +1,10 @@
 // App/routes.js
-var express = require('express');
-var router = express.Router();
-var https = require('https');
-var concat = require('concat-stream');
-var User = require('../models/user');
-var twit = require('twitter');
+var express = require('express'),
+    router = express.Router(),
+    https = require('https'),
+    concat = require('concat-stream'),
+    User = require('../models/user'),
+    twit = require('twitter');
 
 module.exports = function(passport, io) {
     var allTweets = [];
@@ -12,34 +12,11 @@ module.exports = function(passport, io) {
     var connections = [];
     var usersId = [];
 
-    // app.get('/', function (req, res) {
-    //   res.render('index', {title: 'Home'});
-    // });
-
-    // app.get('/login', function (req, res) {
-    //       // Render the page and pass in any flash data if it exists
-    //   res.render('login', {title: 'Login'});
-    // });
-
-    // app.get('/signup', function (req, res) {
-    //       // Render the page and pass in any flash data if it exists
-    //   res.render('signup', {title: 'signup'});
-    // });
-
-    // app.get('/oauth/twitter', passport.authenticate('twitter'));
-
-
-    //   // Handle the callback after twitter has authenticated the user
-    // app.get('/auth/twitter/callback', passport.authenticate('twitter', {successRedirect: '/profile', failureRedirect: '/', failureFlash: true}));
-
     router.get('/', isLoggedIn, function(req, res) {
         var userId = req.user.id;
         // Find user in database
         io.sockets.on('connection', function(socket) {
             User.findById(userId, function(err, doc) {
-                // console.log(socket.id);
-
-                // var number = 0;
 
                 var twitter = new twit({
                     consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -48,18 +25,14 @@ module.exports = function(passport, io) {
                     access_token_secret: doc.twitter.secret
                 });
                 var params = { screen_name: doc.twitter.username };
+
                 twitter.get('friends/list', params, function(error, tweets, response) {
                     if (err) {
                         return err;
                     }
 
                     if (!error) {
-                        // getUserFriends(tweets);
-
-
                         saveData({ 'twitter.username': req.user.twitter.username }, 'twitter.friends', [tweets]);
-
-
                     }
                 });
 
@@ -69,98 +42,54 @@ module.exports = function(passport, io) {
                         var newTweet = { name: data.user.name, tweet: data.text, date: data.created_at };
                         allTweets.push(newTweet);
 
-                        // console.log(data.created_at);
-                        // req.user.twitter.tweets = ['req.user.username'];
-
                         console.log('tweets loaded');
                         saveData({ 'twitter.username': req.user.twitter.username }, 'twitter.tweets', allTweets);
 
-                        // User.findOne(req.user.twitter.username, function(err, docs) {
-                        // Make sure the database only stores unique values
-                        // function databaseCheck() {
-                        //     if (docs.twitter.tweets.length > 0) {
-                        //         function isBigEnough(value) {
-                        //             var testTweet = docs.twitter.tweets.map(function(e) {
-                        //                 return e.tweet;
-                        //             }).indexOf(value.tweet.substr(0, 20));
-
-                        //             if (testTweet === -1) {
-                        //                 return true;
-                        //             }
-                        //             return false;
-                        //         }
-
-                        //         var filtered = allTweets.filter(isBigEnough);
-
-                        //         return filtered;
-                        //     } else if (docs.twitter.tweets.length === 0) {
-                        //         console.log('no tweets', allTweets[0]);
-
-                        //         return [allTweets[0]];
-                        //     }
-                        // }
-
-                        // });
-
                     });
                 });
-
             }); 
-            var number = 0;
 
+            //Callback data gets the data from the user stored in the database.
             function callbackData(userTimeline, usersFriends) {
-                console.log(usersFriends.length);
-                // var tweets = JSON.parse(userTimeline);
-                // var friends = JSON.parse(argument2);
+                var number = 0;
+                // console.log(usersFriends.length);
+
+
                 function myTimer() {
+                    var randomUserFriends = randomFriends(usersFriends);
+                    var randomPositionNumber = Math.floor(Math.random() * randomUserFriends.length);
 
 
+                    if (userTimeline[number].name) {
+                        console.log('yes');
+                        console.log(userTimeline[number].name);
+                        var index = randomUserFriends.indexOf(userTimeline[number].name);
 
-                    var randomPositionNumber = Math.floor(Math.random() * usersFriends.length);
 
-                    usersFriends.splice(randomPositionNumber, 0, { name: userTimeline[number].name });
-                    // usersFriends.join();
-                    if (number !== userTimeline.length) {
-                        number++;
-                    }
-                    console.log(userTimeline[number], 'argument2');
+                        if (number !== userTimeline.length) {
+                            randomUserFriends.splice(randomPositionNumber, 0, userTimeline[number].name);
 
-                    socket.emit('time', { info: userTimeline[number], friends: usersFriends });
-                    var index = usersFriends.indexOf(userTimeline[number].name);
-                    if (index > -1) {
-                        usersFriends.splice(index, 1);
-
-                        // console.log(usersFriends.length);
+                            if (index > -1) {
+                                randomUserFriends.splice(index, 1);
+                            }
+                            number++;
+                        }
+                        socket.emit('time', { info: userTimeline[number], friends: randomUserFriends });
+                    } else {
+                        console.log('no');
                     }
                 }
                 setInterval(function() { myTimer(); }, 5000);
+
             }
             getUserData({ 'twitter.username': req.user.twitter.username }, callbackData);
-
-            // console.log('why?');
-
         }); 
         res.render('profile', { title: 'profile', username: req.user.twitter.username, displayname: req.user.twitter.displayName });
     });
 
-
-
-    // app.get('/logout', function (req, res) {
-    //   req.logout();
-    //   res.redirect('/');
-    // });
-
-
-    // app.get('/*', function (err, req, res, next) {
-    //     res.status(err.status || 500);
-    //     res.render('error', {
-    //       message: err.message,
-    //       error: {}
-    //     });
-    //   });
-
     return router;
 };
+
 // Check if user is logged in
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
@@ -168,16 +97,6 @@ function isLoggedIn(req, res, next) {
     }
 
     res.redirect('/');
-}
-
-function getUserFriends(tweets) {
-    // setInterval(function() {
-
-
-    // socket.emit('time', { info: doc.twitter.tweets[number], friends: usersFriends });
-    // }, 3000);
-
-    // saveData(query, arrayName, data);
 }
 
 function saveData(query, arrayName, data) {
@@ -200,52 +119,35 @@ function getUserData(query, callback) {
         if (err) {
             return console.log(err);
         }
-        // console.log(document);
-
-        // document.twitter.tweets
-
-        // document.twitter.friends
-        // randomFriends(document.twitter.friends);
-
-        callback(document.twitter.tweets, randomFriends(document.twitter.friends));
-
-
+        callback(document.twitter.tweets, document.twitter.friends);
     });
-
 
 }
 
-
 function randomFriends(data) {
-
     var usersFriends = [];
-    // Get random friends from user account
     var arr = [];
+    console.log(data);
 
+    // Get random friends from user account
     while (arr.length < 3) {
+        if (data[0].users) {
 
-        var randomnumber = Math.floor(Math.random() * data[0].users.length);
-        if (arr.indexOf(randomnumber) > -1) {
-            continue;
+
+            var randomnumber = Math.floor(Math.random() * data[0].users.length);
+
+            if (arr.indexOf(randomnumber) > -1) {
+                continue;
+            }
+            arr[arr.length] = randomnumber;
+        } else {
+            console.log('no friends');
         }
-
-        arr[arr.length] = randomnumber;
     }
 
     for (var i = 0; i < arr.length; i++) {
-
-        usersFriends.push(data[0].users[arr[i]]);
-
+        usersFriends.push(data[0].users[arr[i]].name);
     }
-    // var randomPositionNumber = Math.floor(Math.random() * usersFriends.length);
 
-    // usersFriends.splice(randomPositionNumber, 0, { name: doc.twitter.tweets[number].name });
-    // usersFriends.join();
-
-    // console.log(usersFriends);
-    // if (number !== doc.twitter.tweets.length) {
-    //     number++;
-    // }
-    // console.log(usersFriends.length);
     return usersFriends;
 }

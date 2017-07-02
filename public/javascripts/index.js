@@ -4,22 +4,14 @@
     var userForm = document.getElementById('user-form');
     var messageContainer = document.getElementsByClassName('message-container')[0];
     var userContainer = document.getElementsByClassName('user-container')[0];
-
     var form = document.getElementById('form');
-
     var userInput = document.getElementById('tweeter-list');
+    var score = document.querySelector('.score > span');
+    var counter = 0;
+    score.innerHTML = counter;
+    console.log(score);
 
     var userValue;
-
-    userInput.addEventListener('change', function(event) {
-        console.log(userInput.value);
-        userValue = userInput.value;
-
-        event.preventDefault();
-        if (userInput.value !== '') {
-            var input = userInput.value;
-        }
-    });
 
     function saveConnection(conncetionId) {
         var id = conncetionId;
@@ -29,18 +21,30 @@
 
     socket.on('time', function(data) {
         try {
-            var dataCheck = data.info.text;
+            console.log(data.info.name);
 
-            // Var cutstring = data.info.tweet.split(': ');
-            // console.log(data.info);
+            userInput.addEventListener('change', function(event) {
+                // console.log(userInput.value);
+                userValue = userInput.value;
+
+                // event.preventDefault();
+                if (userInput.value !== '') {
+
+                    checkAnswer(data.info.name, userValue);
+                    // data.info.name === userInput.value
+                    // var input = userInput.value;
+                    // console.log(data.info.name === userInput.value, data.info.name);
+                }
+            });
+            // var dataCheck = data.info.text;
+            // var chatMessage = document.createElement('div');
+            // var chat = document.getElementById('chat');
+
             sendData(data);
             optionData(data);
-            console.log(data.friends.length);
-            var chatMessage = document.createElement('div');
 
-            chatMessage.classList.add('user-message');
 
-            // Console.log(cutstring[1]);
+            // chatMessage.classList.add('user-message');
 
             function stringCheck() {
                 if (cutstring[1] !== undefined) {
@@ -49,13 +53,8 @@
 
                 return cutstring[0];
             }
-            // Tweets.push(data);
 
-            var chat = document.getElementById('chat');
 
-            // ChatMessage.innerHTML = `<div class=${data.info.id} tweet><p>${stringCheck()}</p></div>`;
-
-            // chat.appendChild(chatMessage);
         } catch (err) {
             console.log(err);
         }
@@ -65,74 +64,41 @@
         var i;
         var tweetbox = document.getElementById('tweet');
         tweetbox.innerHTML = '';
-
-        // function sendTweets() {
-        // Var randomnumber = Math.floor(Math.random() * data.info.length);
-
         tweetbox.innerHTML = data.info.tweet;
-        // Console.log(data);
-        // }
 
-        // setInterval(sendTweets, 6000);
     }
 
     function optionData(data) {
-        // Console.log(data.friends);
-        // console.log(data.friends.length);
+
         var tweeterList = document.getElementById('tweeter-list');
         var opt = document.createElement('option');
         opt.value = null;
         opt.innerHTML = null;
 
-        data.friends.map(function(name) {
-            tweeterList.options[tweeterList.options.length] = null;
-            // Opt.value = '';
-            // opt.innerHTML = '';
+        for (i = 0; i < tweeterList.options.length; i++) {
+            tweeterList.options[i] = null;
+        }
 
-            // opt.value = name.name;
-            // opt.text = name.name;
+        data.friends.forEach(function(name, index) {
 
-            opt.value = name.name;
-            opt.innerHTML = name.name;
-            tweeterList.appendChild(opt);
+            tweeterList.options[index] = new Option(data.friends[index], data.friends[index]);
 
-            // TweeterList.options[tweeterList.options.length] = Option(name.name, name.name);
         });
     }
 
-    socket.on('user connectionId', function(data) {
-        var test = [];
-        var demoId = {};
-        var connectionId = this.id;
-        var dd = saveConnection(connectionId);
 
-        demoId.id = connectionId;
-        test.push(dd);
+    function checkAnswer(userAnswer, tweetName) {
+        // console.log(userAnswer, tweetName);
+        console.log(typeof counter);
 
-        function currentNews(news, index) {
-            var lowerCaseName = news.description.toLowerCase();
-            if (news.description !== '') {
-                console.log(lowerCaseName);
+        if (userAnswer === tweetName) {
 
-                var result = lowerCaseName.match('shot', 'g', 'i');
+            // console.log('good');
+            // score.innerHTML
+            score.innerHTML = counter++;
 
-                if (result !== null) {
-                    return result.index >= 0;
-                }
-            }
+        } else {
+            console.log('fault');
         }
-    });
-    // Socket.on('friend', function(data) {
-    //     var tweeterList = document.getElementById('tweeter-list');
-
-    //     var randomnumber = Math.floor(Math.random() * data.names.length);
-
-    //     data.names.splice(randomnumber, 0, { name: "Lene" });
-    //     data.names.join();
-
-    //     data.names.map(function(name) {
-
-    //         tweeterList.options[tweeterList.options.length] = new Option(name.name, name.name);
-    //     });
-    // });
+    }
 })();
