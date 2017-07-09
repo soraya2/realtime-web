@@ -18,8 +18,6 @@ var io = require('socket.io').listen(server); // Use socket io in seperate files
 require('./config/passport')(passport);
 mongoose.Promise = global.Promise;
 
-
-
 // Routes
 app.use(morgan('dev')); // Log every request to the console
 app.use(cookieParser());
@@ -68,9 +66,6 @@ app.use('/signup', signup);
 app.use('/auth/twitter', oauth);
 // app.use('/*', notfound);
 
-
-
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     // var err = new Error('Not Found');
@@ -89,7 +84,6 @@ app.use(function(err, req, res) {
     res.render('error');
 });
 
-// Socket io connection
 app.set('port', process.env.PORT || 3000);
 
 server.listen(app.get('port'), function() {
