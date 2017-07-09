@@ -61,8 +61,8 @@ module.exports = function(passport, io) {
 
 
                     if (userTimeline[number].name) {
-                        console.log('yes');
-                        console.log(userTimeline[number].name);
+                        // console.log('yes');
+
                         var index = randomUserFriends.indexOf(userTimeline[number].name);
 
 
@@ -127,7 +127,6 @@ function getUserData(query, callback) {
 function randomFriends(data) {
     var usersFriends = [];
     var arr = [];
-    console.log(data);
 
     // Get random friends from user account
     while (arr.length < 3) {

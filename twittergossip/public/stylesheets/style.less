@@ -67,7 +67,7 @@ ul {
 
 .container {
     display: grid;
-    grid-template-columns: 30%;
+    grid-template-columns: 45%;
     grid-template-rows: 20%;
     width: 100%;
     grid-column-gap: 2em;
@@ -78,7 +78,7 @@ ul {
 }
 
 .group {
-    display: flex;
+    display: block;
 }
 
 #tweet {
@@ -90,7 +90,8 @@ ul {
     padding: 1.5em;
     line-height: 1.3em;
     color: #333333;
-    animation: example 4s infinite;
+    animation: tweet 4s infinite;
+    animation-delay: 0.5s;
 }
 
 div {
@@ -113,10 +114,12 @@ div {
 
 .highscore {
     font-weight: 100;
+    // font-weight: 600;
+    font-size: 1.5em;
     // margin-top: 2.5em;
 }
 
-@keyframes example {
+@keyframes tweet {
     0% {
         color: #efefef;
         left: -10px
@@ -129,7 +132,8 @@ div {
 
 select {
     margin-top: 1em;
-    width: 100%;
+    min-width: 18em;
+    max-width: 20em;
 }
 
 .background {
@@ -266,4 +270,51 @@ select {
     100% {
         transform: rotate(360deg);
     }
+}
+
+.alert {
+    padding: 20px;
+    background-color: #ff9800;
+    /* Red */
+    color: white;
+    margin-bottom: 15px;
+}
+
+.online {
+    background-color: #4CAF50;
+}
+
+
+/* The close button */
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+
+/* When moving the mouse over the close button */
+
+.closebtn:hover {
+    color: black;
+}
+
+.hide {
+    display: none;
+}
+
+#message {
+    z-index: 10;
+    width: 20em;
+    float: right;
+}
+
+.lives {
+    display: flex;
 }

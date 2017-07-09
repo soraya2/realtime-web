@@ -1,5 +1,8 @@
   <main class="main-background">
-
+<div id="message" class="hide">
+  <span class="closebtn">&times;</span>
+  <span class="message-text"></span>
+</div>
   <div id='profile'>
     {{!-- <p>{{displayname}}</p> --}}
     <p>Welkom: {{username}}</p>
@@ -10,11 +13,13 @@
 
     <h1 class="title">Who's the tweeter</h1>
 <div class="group">
-    <p class="score">High: <span>0</span></p>
-    <p class="highscore"> <span>0</span> </p>
+    <p class="score">Score: <span>0</span></p>
+    <p class="highscore">Highscore: <span>0</span> </p>
 </div>
-<ul>
-  <li><img class="bird" src="img/_bird.svg" alt="bird"></li>
+<ul class="lives">
+  <li class="bird-live"><img class="bird" src="img/_bird.svg" alt="bird"></li>
+  <li class="bird-live"><img class="bird" src="img/_bird.svg" alt="bird"></li>
+  <li class="bird-live"><img class="bird" src="img/_bird.svg" alt="bird"></li>
 
 </ul>
       <div class='background'>
