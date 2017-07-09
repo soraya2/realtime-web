@@ -1,5 +1,12 @@
 (function() {
-    var socket = io.connect();
+    var reconncect = true;
+    var socket = io.connect({
+        'reconnection': reconncect,
+        'reconnectionDelay': 1000,
+        'reconnectionDelayMax': 10000,
+        'reconnectionAttempts': 5
+    });
+
     var messageForm = document.getElementById('message-form');
     var userForm = document.getElementById('user-form');
     var messageContainer = document.getElementsByClassName('message-container')[0];
@@ -8,8 +15,11 @@
     var userInput = document.getElementById('tweeter-list');
     var score = document.querySelector('.score > span');
     var counter = 0;
-    score.innerHTML = counter;
-    console.log(score);
+
+    if (score) {
+        score.innerHTML = counter;
+        console.log(score);
+    }
 
     var userValue;
 
@@ -100,5 +110,77 @@
         } else {
             console.log('fault');
         }
+    }
+
+    // socket.on('connection', function(data) {
+    //     console.log('hello');
+
+    // });
+
+    // socket.on('connection', function(client) {
+    //     client.send("hello");
+    //     console.log("hello", client);
+    // });
+
+
+    socket.on('connect', function(client) {
+
+        console.log('sjsjsj');
+        window.stop();
+        socket.emit('login', { userId: socket.id });
+    });
+
+    socket.on('disconnect', function() {
+
+        console.log('disconnected');
+
+        function reconnect(argument) {
+
+            if (navigator.onLine) {
+                window.location.reload();
+            }
+
+        }
+
+        setTimeout(reconnect, 5000);
+    });
+
+    socket.on('error', function(e) {
+        console.log('System', e ? e : 'A unknown error occurred');
+    });
+
+    socket.on('reconnect_attempt', function(e) {
+
+
+        function reconnect(argument) {
+            // socket.connect();
+
+            if (navigator.onLine) {
+
+                window.location.reload();
+                console.log('online');
+
+            } else {
+                console.log('offline');
+            }
+
+
+
+            // console.log('reconnect');
+
+        }
+
+        setTimeout(reconnect, 4000);
+        // console.log('System', e ? e : 'A unknown error occurred');
+        console.log('reconnecting');
+    });
+    // socket.sockets.on('connection', function(socket) {
+    //     console.log(socket);
+
+    // });
+
+    function testConnection() {
+        reconncect = true;
+
     }
 })();
