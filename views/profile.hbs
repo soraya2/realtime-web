@@ -3,18 +3,21 @@
   <span class="closebtn">&times;</span>
   <span class="message-text"></span>
 </div>
-  <div id='profile'>
+  <div id='profile' class="profile">
     {{!-- <p>{{displayname}}</p> --}}
-    <p>Welkom: {{username}}</p>
+    <p class="name">Welkom <span>{{username}}</span></p>
+    <a href="/logout">logout</a>
   </div>
+  <div class="highscore-other-users hide">
+   <p></p>
+ </div>
   {{!-- <div class="loader"></div> --}}
-  <a href="/logout">logout</a>
   <section class="container">
 
     <h1 class="title">Who's the tweeter</h1>
 <div class="group">
     <p class="score">Score: <span>0</span></p>
-    <p class="highscore">Highscore: <span>0</span> </p>
+    <p class="highscore">Highscore: <span>0</span> <span class="new-highscore hide">New</span> </p>
 </div>
 <ul class="lives">
   <li class="bird-live"><img class="bird" src="img/_bird.svg" alt="bird"></li>
@@ -23,10 +26,11 @@
 
 </ul>
       <div class='background'>
-         <p class='tweest' id='tweet'></p>
+         <p class='tweet' id='tweet'></p>
       </div>
-  </section>
   <select name="tweeter-list" id="tweeter-list">
-
+  </section>
   </select>
+  <button class="btn restart-btn hide">Restart the game</button>
   </main>
+
