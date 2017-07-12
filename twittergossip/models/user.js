@@ -16,7 +16,8 @@ var userSchema = mongoose.Schema({
         displayName: String,
         username: String,
         tweets: Array,
-        friends: Array
+        friends: Array,
+        gameHighscore: String
     }
 });
 

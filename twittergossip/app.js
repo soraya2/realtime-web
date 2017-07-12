@@ -35,7 +35,9 @@ app.use(passport.initialize());
 app.use(passport.session()); // Persistent login sessions
 app.use(flash()); // Use connect-flash for flash messages stored in session
 
-mongoose.connect(process.env.DATABASE);
+// mongoose.connect(process.env.DATABASE);
+
+mongoose.connect(process.env.DATABASE, { server: { reconnectTries: Number.MAX_VALUE, reconnectInterval: 2000 } });
 //
 var index = require('./routes/index.js');
 var login = require('./routes/login.js');

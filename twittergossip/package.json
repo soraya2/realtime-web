@@ -15,11 +15,10 @@
         "mongoose": "^4.9.7"
     },
     "engines": {
-        "node": "v5.7",
+        "node": "v6.9.5",
         "npm": "3.6.0"
     },
     "dependencies": {
-        "bcrypt-nodejs": "0.0.3",
         "body-parser": "^1.17.1",
         "connect-flash": "^0.1.1",
         "cookie-parser": "^1.4.3",
