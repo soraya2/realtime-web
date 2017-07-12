@@ -1,8 +1,6 @@
 // App/routes.js
 var express = require('express'),
     router = express.Router(),
-    https = require('https'),
-    concat = require('concat-stream'),
     User = require('../models/user'),
     twit = require('twitter');
 
